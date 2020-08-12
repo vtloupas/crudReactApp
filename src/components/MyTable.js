@@ -4,7 +4,7 @@ import MaterialTable from 'material-table';
 import axios from "axios";
 
 
-export const Table=() => {
+export default function Table() {
     const columns = [
         { title: 'id', field: 'id', hidden:true },
         { title: 'Τίτλος', field: 'title' },
