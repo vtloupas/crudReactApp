@@ -1,8 +1,28 @@
 import React, {useState} from "react";
 import {FormGroup, FormControl, InputLabel , Input, Button, Container} from "@material-ui/core";
-import QueriesFunctions from "./QueriesFunctions";
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+    },
+    textInput: {
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+    },
+    button: {
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+    },
+}));
 
 const AddGameForm = (props) => {
+
+    const classes = useStyles();
 
     const initialFormState = {id:null, title:'', company: '' }
     const [game, setGame] = useState(initialFormState)
@@ -21,23 +41,24 @@ const AddGameForm = (props) => {
         if (!game.title || !game.company) return
         props.addGame(game)
         setGame(initialFormState)
-        await QueriesFunctions.putGame(game)
     }
 
     return (
         <Container>
             <h3>Εισαγωγή παιχνιδιού</h3>
-            <form onSubmit={handleOnSubmitGame}>
+            <form className={classes.root} onSubmit={handleOnSubmitGame}>
                 <FormGroup>
-                    <FormControl>
+                    <FormControl className={classes.textInput}>
                         <InputLabel htmlFor="title">Τίτλος</InputLabel >
                         <Input id="title" type="text" name="title" value={game.title} onChange={handleInputChange}/>
                     </FormControl>
-                    <FormControl>
+                    <FormControl className={classes.textInput}>
                         <InputLabel htmlFor="company">Εταιρεία</InputLabel >
                         <Input id="company" type="text" name="company" value={game.company} onChange={handleInputChange}/>
                     </FormControl>
-                    <Button value="Submit" type="submit">ΠΡΟΣΘΗΚΗ ΠΑΙΧΝΙΔΙΟΥ</Button>
+                    <FormControl className={classes.button}>
+                        <Button variant="outlined" color="primary" value="Submit" type="submit" >ΠΡΟΣΘΗΚΗ ΠΑΙΧΝΙΔΙΟΥ</Button>
+                    </FormControl>
                 </FormGroup>
             </form>
         </Container>

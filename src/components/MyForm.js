@@ -33,7 +33,9 @@ export default function MyForm(){
 
     const [editing, setEditing] = useState(false)
 
-    const addGame = (game) => {
+    const addGame = async (game) => {
+        let res = await QueriesFunctions.putGame(game)
+        game.id = res.data.rows.id
         setGames((prevState) => {
             const data = [...prevState.data]
             data.push(game)

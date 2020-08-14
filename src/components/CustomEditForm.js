@@ -1,7 +1,28 @@
 import React, {useEffect, useState} from "react";
 import {FormGroup, FormControl, InputLabel , Input, Button, Container} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+    },
+    textInput: {
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+    },
+    button: {
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+    },
+}));
 
 const EditGameForm = (props) => {
+
+    const classes = useStyles()
 
     const [formGame, setFormGame] = useState(props.gameForUpdate)
 
@@ -26,18 +47,20 @@ const EditGameForm = (props) => {
     return (
         <Container>
             <h3>Επεξεργασία νέου παιχνιδιού</h3>
-            <form onSubmit={handleOnSubmitGame}>
+            <form onSubmit={handleOnSubmitGame} className={classes.root}>
                 <FormGroup>
-                    <FormControl>
+                    <FormControl className={classes.textInput}>
                         <InputLabel htmlFor="title">Τίτλος</InputLabel >
                         <Input id="title" type="text" name="title" value={formGame.title} onChange={handleInputChange}/>
                     </FormControl>
-                    <FormControl>
+                    <FormControl className={classes.textInput}>
                         <InputLabel htmlFor="company">Εταιρεία</InputLabel >
                         <Input id="company" type="text" name="company" value={formGame.company} onChange={handleInputChange}/>
                     </FormControl>
-                    <Button type="submit" value="submit">ΑΠΟΘΗΚΕΥΣΗ ΠΑΙΧΝΙΔΙΟΥ</Button>
-                    <Button onClick={()=>(props.setEditing(false))}>Ακυρωση</Button>
+                    <formControl className={classes.button}>
+                        <Button type="submit" value="submit" variant="contained" color="primary">ΑΠΟΘΗΚΕΥΣΗ ΠΑΙΧΝΙΔΙΟΥ</Button>
+                        <Button onClick={()=>(props.setEditing(false))} variant="contained" color="secondary" >Ακυρωση</Button>
+                    </formControl>
                 </FormGroup>
             </form>
         </Container>
