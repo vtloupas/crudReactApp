@@ -1,7 +1,7 @@
-import React from 'react';
-import {useEffect} from 'react';
+import React, {useEffect} from 'react';
 import MaterialTable from 'material-table';
-import axios from "axios";
+import QueriesFunctions from "./QueriesFunctions";
+import {Container} from "@material-ui/core";
 
 
 export default function Table() {
@@ -16,7 +16,7 @@ export default function Table() {
     });
 
     const getGames = async () => {
-        let res = await axios('http://localhost:3000/games');
+        let res = await QueriesFunctions.getGames();
         setTableData(prevState =>({
             ...prevState,
             data:res.data.rows
@@ -24,7 +24,7 @@ export default function Table() {
     };
 
     const putGame = async (newData) => {
-        await axios.put('http://localhost:3000/games',newData);
+        await QueriesFunctions.putGame(newData);
         setTableData((prevState) => {
             const data = [...prevState.data];
             data.push(newData);
@@ -34,7 +34,7 @@ export default function Table() {
     };
 
     const updateGame = async (newData, oldData) => {
-        await axios.post(`http://localhost:3000/games/${oldData.id}`,newData);
+        await QueriesFunctions.updateGame(oldData, newData);
         if (oldData) {
             setTableData((prevState) => {
                 const data = [...prevState.data];
@@ -46,7 +46,7 @@ export default function Table() {
     };
 
     const deleteGame = async (oldData) => {
-        await axios.delete(`http://localhost:3000/games/${oldData.id}`)
+        await QueriesFunctions.deleteGame(oldData);
         setTableData((prevState) => {
             const data = [...prevState.data];
             data.splice(data.indexOf(oldData), 1);
@@ -59,27 +59,29 @@ export default function Table() {
     },[]);
 
     return (
-        <MaterialTable
-            title="Πίνακας παιχνιδιών"
-            columns={columns}
-            localization={{
-                header: {
-                    actions: ''
-                },
-            }}
-            data={tableData.data}
-            editable={{
-                onRowAdd: async (newData) => {
-                    await putGame(newData);
-                },
-                onRowUpdate: async (newData, oldData) =>{
-                    await updateGame(newData, oldData);
-                },
-                onRowDelete: async (oldData) => {
-                    await deleteGame(oldData);
-                },
-            }}
-        />
+        <Container>
+            <MaterialTable
+                title="Πίνακας παιχνιδιών"
+                columns={columns}
+                localization={{
+                    header: {
+                        actions: ''
+                    },
+                }}
+                data={tableData.data}
+                editable={{
+                    onRowAdd: async (newData) => {
+                        await putGame(newData);
+                    },
+                    onRowUpdate: async (newData, oldData) =>{
+                        await updateGame(newData, oldData);
+                    },
+                    onRowDelete: async (oldData) => {
+                        await deleteGame(oldData);
+                    },
+                }}
+            />
+        </Container>
     );
 }
 
