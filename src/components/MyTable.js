@@ -63,6 +63,14 @@ export default function Table() {
             <MaterialTable
                 title="Πίνακας παιχνιδιών"
                 columns={columns}
+                options={{
+                    headerStyle: {
+                        fontWeight:'bold'
+                    },
+                    rowStyle: {
+                        backgroundColor: '#EEE',
+                    }
+                }}
                 localization={{
                     header: {
                         actions: ''
