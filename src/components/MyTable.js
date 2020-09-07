@@ -24,10 +24,10 @@ export default function Table() {
     };
 
     const putGame = async (newData) => {
-        await QueriesFunctions.putGame(newData);
+        let res = await QueriesFunctions.putGame(newData);
         setTableData((prevState) => {
             const data = [...prevState.data];
-            data.push(newData);
+            data.push(res.data.rows);
             return { ...prevState, data };
         });
 
