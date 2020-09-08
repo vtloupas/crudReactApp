@@ -6,6 +6,7 @@ import CustomTable from './CustomTable'
 import AddGameForm from "./CustomAddForm";
 import EditGameForm from "./CustomEditForm";
 import {getGamesApi, putGameApi, updateGameApi, deleteGameApi} from "./QueriesFunctions";
+import ErrorMessage from "./ErrorMessage";
 
 export default function MyForm(){
     // useState για την φόρμα
@@ -21,12 +22,25 @@ export default function MyForm(){
     //useState για τον πίνακα
     const [games, setGames] = useState({data:''})
 
+    const [error, setError] = useState({
+        message:'',
+        show:false
+    });
+
     const getGames = async () => {
-        let res = await getGamesApi();
-        setGames((prevState) =>({
-            ...prevState,
-            data: res.data.rows
-        }))
+        try {
+            let res = await getGamesApi();
+            setGames((prevState) =>({
+                ...prevState,
+                data: res.data.rows
+            }))
+        } catch (error) {
+            setError(prevState =>({
+                ...prevState,
+                message: `Υπάρχει πρόβλημα επικοινωνήστε με τον διαχειριστή του συστήματος`,
+                show: true,
+            }))
+        }
     };
 
     // useState για το edit εγγραφής του πίνακα
@@ -34,16 +48,24 @@ export default function MyForm(){
     const [editing, setEditing] = useState(false)
 
     const addGame = async (game) => {
-        let res = await putGameApi(game)
-        game.id = res.data.rows.id
-        setGames((prevState) => {
-            const data = [...prevState.data]
-            data.push(game)
-            return{
+        try{
+            let res = await putGameApi(game)
+            game.id = res.data.rows.id
+            setGames((prevState) => {
+                const data = [...prevState.data]
+                data.push(game)
+                return{
+                    ...prevState,
+                    data
+                }
+            })
+        } catch (error) {
+            setError(prevState =>({
                 ...prevState,
-                data
-            }
-        })
+                message: `Η εισαγωγή δεν έγινε επικοινωνήστε με τον διαχειριστή του συστήματος`,
+                show: true,
+            }))
+        }
     }
 
     const updateGame = async (game) => {
@@ -52,28 +74,44 @@ export default function MyForm(){
     }
 
     const saveUpdateGame = async (oldGame,game) => {
-        setEditing(false)
-        await updateGameApi(oldGame,game);
-        setGames((prevState) => {
-            const data = [...prevState.data]
-            data[data.indexOf(oldGame)]=game
-            return {
+        try{
+            setEditing(false)
+            await updateGameApi(oldGame,game);
+            setGames((prevState) => {
+                const data = [...prevState.data]
+                data[data.indexOf(oldGame)]=game
+                return {
+                    ...prevState,
+                    data
+                }
+            })
+        } catch (error) {
+            setError(prevState =>({
                 ...prevState,
-                data
-            }
-        })
+                message: `Η επεξεργασία δεν έγινε επικοινωνήστε με τον διαχειριστή του συστήματος`,
+                show: true,
+            }))
+        }
     }
 
     const deleteGame = async (game) => {
-        await deleteGameApi(game);
-        setGames( (prevState) => {
-            const data = [...prevState.data]
-            data.splice(data.indexOf(game), 1);
-            return {
+        try{
+            await deleteGameApi(game);
+            setGames( (prevState) => {
+                const data = [...prevState.data]
+                data.splice(data.indexOf(game), 1);
+                return {
+                    ...prevState,
+                    data
+                }
+            })
+        } catch (error) {
+            setError(prevState =>({
                 ...prevState,
-                data
-            }
-        })
+                message: `Η διαγραφή δεν έγινε επικοινωνήστε με τον διαχειριστή του συστήματος`,
+                show: true,
+            }))
+        }
     }
 
     useEffect(() => {
@@ -82,6 +120,7 @@ export default function MyForm(){
 
     return (
         <Container>
+            {error.show && <ErrorMessage message={error.message} setError={setError}/>}
             <div>
                 <Grid container spacing={3}>
                     <Grid item xs={4}>
