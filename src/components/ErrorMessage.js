@@ -1,6 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Alert } from '@material-ui/lab';
+import {makeStyles} from '@material-ui/core/styles';
+import {Alert} from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -16,7 +16,8 @@ export default function SimpleAlerts(props) {
 
     return (
         <div className={classes.root}>
-            <Alert severity="error" onClose={() => props.setError({message:'',show:false})} dismissible>{props.message} </Alert>
+            <Alert severity="error" onClose={() => props.setError({message: '', show: false})}
+                   dismissible>{props.message} </Alert>
         </div>
     );
 }

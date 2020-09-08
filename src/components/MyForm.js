@@ -5,37 +5,37 @@ import Grid from '@material-ui/core/Grid';
 import CustomTable from './CustomTable'
 import AddGameForm from "./CustomAddForm";
 import EditGameForm from "./CustomEditForm";
-import {getGamesApi, putGameApi, updateGameApi, deleteGameApi} from "./QueriesFunctions";
+import {deleteGameApi, getGamesApi, putGameApi, updateGameApi} from "./QueriesFunctions";
 import ErrorMessage from "./ErrorMessage";
 
-export default function MyForm(){
+export default function MyForm() {
     // useState για την φόρμα
     const initialGameState = {
         id: null,
-        title:'',
-        company:'',
-    }
+        title: '',
+        company: '',
+    };
 
     // useSate για το game που γίνεται update
-    const [currentGame, setCurrentGame] = useState(initialGameState)
+    const [currentGame, setCurrentGame] = useState(initialGameState);
 
     //useState για τον πίνακα
-    const [games, setGames] = useState({data:''})
+    const [games, setGames] = useState({data: ''});
 
     const [error, setError] = useState({
-        message:'',
-        show:false
+        message: '',
+        show: false
     });
 
     const getGames = async () => {
         try {
             let res = await getGamesApi();
-            setGames((prevState) =>({
+            setGames((prevState) => ({
                 ...prevState,
                 data: res.data.rows
             }))
         } catch (error) {
-            setError(prevState =>({
+            setError(prevState => ({
                 ...prevState,
                 message: `Υπάρχει πρόβλημα επικοινωνήστε με τον διαχειριστή του συστήματος`,
                 show: true,
@@ -45,60 +45,60 @@ export default function MyForm(){
 
     // useState για το edit εγγραφής του πίνακα
 
-    const [editing, setEditing] = useState(false)
+    const [editing, setEditing] = useState(false);
 
     const addGame = async (game) => {
-        try{
-            let res = await putGameApi(game)
-            game.id = res.data.rows.id
+        try {
+            let res = await putGameApi(game);
+            game.id = res.data.rows.id;
             setGames((prevState) => {
-                const data = [...prevState.data]
-                data.push(game)
-                return{
-                    ...prevState,
-                    data
-                }
-            })
-        } catch (error) {
-            setError(prevState =>({
-                ...prevState,
-                message: `Η εισαγωγή δεν έγινε επικοινωνήστε με τον διαχειριστή του συστήματος`,
-                show: true,
-            }))
-        }
-    }
-
-    const updateGame = async (game) => {
-        setEditing(true);
-        setCurrentGame(game);
-    }
-
-    const saveUpdateGame = async (oldGame,game) => {
-        try{
-            setEditing(false)
-            await updateGameApi(oldGame,game);
-            setGames((prevState) => {
-                const data = [...prevState.data]
-                data[data.indexOf(oldGame)]=game
+                const data = [...prevState.data];
+                data.push(game);
                 return {
                     ...prevState,
                     data
                 }
             })
         } catch (error) {
-            setError(prevState =>({
+            setError(prevState => ({
+                ...prevState,
+                message: `Η εισαγωγή δεν έγινε επικοινωνήστε με τον διαχειριστή του συστήματος`,
+                show: true,
+            }))
+        }
+    };
+
+    const updateGame = async (game) => {
+        setEditing(true);
+        setCurrentGame(game);
+    };
+
+    const saveUpdateGame = async (oldGame, game) => {
+        try {
+            setEditing(false);
+            await updateGameApi(oldGame, game);
+            setGames((prevState) => {
+                const data = [...prevState.data];
+                data[data.indexOf(oldGame)] = game;
+                return {
+                    ...prevState,
+                    data
+                }
+            })
+        } catch (error) {
+            setError(prevState => ({
                 ...prevState,
                 message: `Η επεξεργασία δεν έγινε επικοινωνήστε με τον διαχειριστή του συστήματος`,
                 show: true,
             }))
         }
-    }
+    };
 
     const deleteGame = async (game) => {
-        try{
+        try {
             await deleteGameApi(game);
-            setGames( (prevState) => {
-                const data = [...prevState.data]
+            setGames((prevState) => {
+                const data = [...prevState.data];
                 data.splice(data.indexOf(game), 1);
                 return {
                     ...prevState,
@@ -106,17 +106,17 @@ export default function MyForm(){
                 }
             })
         } catch (error) {
-            setError(prevState =>({
+            setError(prevState => ({
                 ...prevState,
                 message: `Η διαγραφή δεν έγινε επικοινωνήστε με τον διαχειριστή του συστήματος`,
                 show: true,
             }))
         }
-    }
+    };
 
     useEffect(() => {
         getGames();
-    },[]);
+    }, []);
 
     return (
         <Container>
@@ -126,7 +126,8 @@ export default function MyForm(){
                     <Grid item xs={4}>
                         <Paper>
                             {editing ? (
-                                <EditGameForm gameForUpdate={currentGame} saveUpdateGame={saveUpdateGame} setEditing={setEditing}/>
+                                <EditGameForm gameForUpdate={currentGame} saveUpdateGame={saveUpdateGame}
+                                              setEditing={setEditing}/>
                             ) : (
                                 <AddGameForm addGame={addGame}/>
                             )}

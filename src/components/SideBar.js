@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -22,22 +22,22 @@ function ListItemLink(props) {
 }
 
 function SimpleList(props) {
-    const { classes } = props;
+    const {classes} = props;
     return (
         <div className={classes.root}>
             <List component="nav">
                 <ListItem button>
                     <ListItemIcon>
-                        <InboxIcon />
+                        <InboxIcon/>
                     </ListItemIcon>
-                    <ListItemText primary="Inbox" />
+                    <ListItemText primary="Inbox"/>
                 </ListItem>
-                <Divider />
+                <Divider/>
                 <ListItem button>
                     <ListItemIcon>
-                        <DraftsIcon />
+                        <DraftsIcon/>
                     </ListItemIcon>
-                    <ListItemText primary="Drafts" />
+                    <ListItemText primary="Drafts"/>
                 </ListItem>
             </List>
         </div>

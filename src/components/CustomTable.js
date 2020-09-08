@@ -1,6 +1,6 @@
 import React from "react";
-import { TableContainer, Table, TableCell, TableBody,TableRow, TableHead} from "@material-ui/core";
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import {makeStyles, withStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CustomTable(props){
+export default function CustomTable(props) {
 
     const StyledTableCell = withStyles((theme) => ({
         head: {
@@ -46,9 +46,9 @@ export default function CustomTable(props){
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.games.length >0 ? (
-                        props.games.map((game)=>(
-                            <StyledTableRow  key={game.id}>
+                    {props.games.length > 0 ? (
+                        props.games.map((game) => (
+                            <StyledTableRow key={game.id}>
                                 <StyledTableCell align="left">{game.id}</StyledTableCell>
                                 <StyledTableCell align="left">{game.title}</StyledTableCell>
                                 <StyledTableCell align="left">{game.company}</StyledTableCell>
@@ -57,15 +57,15 @@ export default function CustomTable(props){
                                                 variant="contained"
                                                 color="primary"
                                                 className={classes.button}
-                                                onClick={()=> props.updateGame(game)}>
-                                        <EditIcon />
+                                                onClick={() => props.updateGame(game)}>
+                                        <EditIcon/>
                                     </IconButton>
                                     <IconButton aria-label="delete"
                                                 variant="contained"
                                                 color="secondary"
                                                 className={classes.button}
-                                                onClick={()=> props.deleteGame(game)} >
-                                        <DeleteIcon />
+                                                onClick={() => props.deleteGame(game)}>
+                                        <DeleteIcon/>
                                     </IconButton>
                                 </StyledTableCell>
                             </StyledTableRow>
