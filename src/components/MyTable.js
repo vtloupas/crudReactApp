@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import MaterialTable from 'material-table';
-import QueriesFunctions from "./QueriesFunctions";
+import {getGamesApi, putGameApi, updateGameApi, deleteGameApi} from "./QueriesFunctions";
 import {Container} from "@material-ui/core";
 
 
@@ -16,7 +16,7 @@ export default function Table() {
     });
 
     const getGames = async () => {
-        let res = await QueriesFunctions.getGames();
+        let res = await getGamesApi();
         setTableData(prevState =>({
             ...prevState,
             data:res.data.rows
@@ -24,7 +24,7 @@ export default function Table() {
     };
 
     const putGame = async (newData) => {
-        let res = await QueriesFunctions.putGame(newData);
+        let res = await putGameApi(newData);
         setTableData((prevState) => {
             const data = [...prevState.data];
             data.push(res.data.rows);
@@ -34,7 +34,7 @@ export default function Table() {
     };
 
     const updateGame = async (newData, oldData) => {
-        await QueriesFunctions.updateGame(oldData, newData);
+        await updateGameApi(oldData, newData);
         if (oldData) {
             setTableData((prevState) => {
                 const data = [...prevState.data];
@@ -46,7 +46,7 @@ export default function Table() {
     };
 
     const deleteGame = async (oldData) => {
-        await QueriesFunctions.deleteGame(oldData);
+        await deleteGameApi(oldData);
         setTableData((prevState) => {
             const data = [...prevState.data];
             data.splice(data.indexOf(oldData), 1);

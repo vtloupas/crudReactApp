@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import CustomTable from './CustomTable'
 import AddGameForm from "./CustomAddForm";
 import EditGameForm from "./CustomEditForm";
-import QueriesFunctions from "./QueriesFunctions";
+import {getGamesApi, putGameApi, updateGameApi, deleteGameApi} from "./QueriesFunctions";
 
 export default function MyForm(){
     // useState για την φόρμα
@@ -22,7 +22,7 @@ export default function MyForm(){
     const [games, setGames] = useState({data:''})
 
     const getGames = async () => {
-        let res = await QueriesFunctions.getGames();
+        let res = await getGamesApi();
         setGames((prevState) =>({
             ...prevState,
             data: res.data.rows
@@ -34,7 +34,7 @@ export default function MyForm(){
     const [editing, setEditing] = useState(false)
 
     const addGame = async (game) => {
-        let res = await QueriesFunctions.putGame(game)
+        let res = await putGameApi(game)
         game.id = res.data.rows.id
         setGames((prevState) => {
             const data = [...prevState.data]
@@ -53,7 +53,7 @@ export default function MyForm(){
 
     const saveUpdateGame = async (oldGame,game) => {
         setEditing(false)
-        await QueriesFunctions.updateGame(oldGame,game);
+        await updateGameApi(oldGame,game);
         setGames((prevState) => {
             const data = [...prevState.data]
             data[data.indexOf(oldGame)]=game
@@ -65,7 +65,7 @@ export default function MyForm(){
     }
 
     const deleteGame = async (game) => {
-        await QueriesFunctions.deleteGame(game);
+        await deleteGameApi(game);
         setGames( (prevState) => {
             const data = [...prevState.data]
             data.splice(data.indexOf(game), 1);
